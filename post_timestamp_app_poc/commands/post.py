@@ -1,4 +1,7 @@
-class Post:
+from post_timestamp_app_poc.commands.base_command import BaseCommand
+
+
+class Post(BaseCommand):
     """Provides the post command. Will run a curl command to send a POST request to the deployed
     application.
 
@@ -8,5 +11,5 @@ class Post:
     Returns:
         None
     """
-    def __init__(self, endpoint):
+    def execute(self, endpoint):
         raise NotImplementedError

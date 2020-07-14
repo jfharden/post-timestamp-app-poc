@@ -1,8 +1,14 @@
-class Destroy:
-    """Provides the destroy command. Will run terraform destroy.
+from post_timestamp_app_poc.commands.base_command import BaseCommand
 
-    Returns:
-        None
+
+class Destroy(BaseCommand):
+    """Provides the destroy command. Will run terraform destroy.
     """
-    def __init__(self):
+
+    def execute(self):
+        """Execute terraform destroy
+
+            Returns:
+                None
+        """
         raise NotImplementedError
