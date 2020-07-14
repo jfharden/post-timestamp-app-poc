@@ -7,6 +7,8 @@ I'm using terraform to provision and deploy the service.
 
 I wrote the command line tools in pythnon 3.8.
 
+![Proof of concept high level design](images/high-level-design.png)
+
 ## Considerations
 
 ### Choice of a decoupled event driven architecture

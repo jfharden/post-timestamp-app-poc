@@ -1,4 +1,4 @@
-# post-timestamp-app-poc
+# Post Timestamp App POC
 Proof of concept for a simple web app which posts a timestamp into a database.
 
 Included in a simple cli client to orchestrate deployment, destruction, and posting to the web app)
@@ -38,4 +38,14 @@ Once you have this working the following commands are available:
 $ ./post-timestamp-app-poc deploy
 $ ./post-timestamp-app-poc post
 $ ./post-timestamp-app-poc destroy
+```
+
+## Updating documentation
+
+There is a Makefile which will regenerate PDFs of the documentation (which is all written in markdown), you can simply
+run make doc and it will be regenerated using pandoc in a docker container:
+
+```bash
+$ make doc
+docker run -v `pwd`/docs/:/data --rm -ti pandoc/latex:2.9 pandoc system-design.md --table-of-contents -o system-design.pdf
 ```
