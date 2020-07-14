@@ -5,11 +5,16 @@ Included in a simple cli client to orchestrate deployment, destruction, and post
 
 ## Getting started
 
-### Prerequisites
+### Prerequisites to run
 
 * Python 3.8
 * AWS credentials (ideally to a sandboxed/isolated account)
-* docker 19.03
+* terraform 0.12.28 (See https://releases.hashicorp.com/terraform/0.12.28/ or https://www.terraform.io/downloads.html)
+* curl
+
+Note: In a real production project I would like to run these from docker containers, but you need to standardise how
+your AWS credentials get into the container running terraform and since I don't know how you are managing credentials
+it seemed an easier setup to get the single terraform binary.
 
 ## Usage
 
