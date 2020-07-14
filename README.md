@@ -35,9 +35,9 @@ Once you have this working the following commands are available:
   to the app
 
 ```bash
-$ ./post-timestamp-app-poc deploy
-$ ./post-timestamp-app-poc post
-$ ./post-timestamp-app-poc destroy
+$ ./post_timestamp_app_poc.py deploy
+$ ./post_timestamp_app_poc.py post
+$ ./post_timestamp_app_poc.py destroy
 ```
 
 ## Updating documentation
