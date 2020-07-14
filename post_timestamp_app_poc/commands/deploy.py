@@ -6,7 +6,7 @@ class Deploy(BaseCommand):
     """
 
     def execute(self, app_name, resource_group_tag_name):
-        """Execute terraform apply with the provided arguments
+        """Execute terraform init and terraform apply with the provided arguments
 
             Args:
                 app_name (string): Prefix name to use on all deployed resources.
@@ -15,4 +15,12 @@ class Deploy(BaseCommand):
             Returns:
                 None
         """
-        raise NotImplementedError
+        init_cmd = ["terraform", "init"]
+        self._run(init_cmd, cwd="terraform/")
+
+        apply_cmd = [
+            "terraform", "apply",
+            "-var", "app_name={}".format(app_name),
+            "-var", "resource_group_tag_name={}".format(resource_group_tag_name),
+        ]
+        self._run(apply_cmd, cwd="terraform/")

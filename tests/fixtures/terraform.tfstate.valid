@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "terraform_version": "0.12.28",
+  "serial": 1,
+  "lineage": "c29f9fc5-0482-183e-43a7-e30309de2773",
+  "outputs": {
+    "api_gateway_url": {
+      "value": "http://www.example.net",
+      "type": "string"
+    },
+    "app_name": {
+      "value": "jfharden-poc",
+      "type": "string"
+    },
+    "resource_group_tag_name": {
+      "value": "project",
+      "type": "string"
+    }
+  },
+  "resources": []
+}

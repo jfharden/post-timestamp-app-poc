@@ -11,4 +11,5 @@ class Destroy(BaseCommand):
             Returns:
                 None
         """
-        raise NotImplementedError
+        destroy_cmd = ["terraform", "destroy"]
+        self._run(destroy_cmd, cwd="terraform/")
