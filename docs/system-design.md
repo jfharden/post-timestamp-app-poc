@@ -20,11 +20,11 @@ database in batches. This has the following benefits:
 * Requests get buffered before going into the database and are entered in batches which is a significantly more
   efficient process for most databases
 * If the database is down for any reason (undergoing maintainence, during a disaster scenario etc) requests will still
-  be accepted and buffered and retried for up to 24 hours giving much higher availablility to clients and easier more
+  be accepted and buffered and retried 20 times giving much higher availablility to clients and easier more
   stress-free maintainince to the engineers.
 * If the database comes unexpected high load requests will buffer while the autoscaling scales up the database meaning
   congestion during the scaling activity will not affect clients or ingestion of raw data.
-* SQS will give us automatic retries so if the insert fails for any reason it will get retried for up to 24 hours.
+* SQS will give us automatic retries so if the insert fails for any reason it will get retried up to 20 times.
 * Any requests which fail to insert after this time will be delivered to a dead letter queue (configured to store the
   files on s3), this allows for analysis to be performed later on failed requests to understand what's happening, it
   also means in the event of a multi-day outage you have lost no raw data and can catch up by replaying the requests
