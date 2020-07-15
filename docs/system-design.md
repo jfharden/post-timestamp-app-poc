@@ -98,7 +98,7 @@ better still (such as SignalFx or DataDog)).
   or too few requests. As with error rates historical trend analysis can help here, but you need an established baseline
   over a statistically significant period.
   * Duration of requests
-* AWS Lambdas (both Lambdas)
+* AWS Lambdas (all 3)
   * Errors - The number of invocations that resulted in an error
   * Throttles - The number of times AWS throttled your invocations (which do not show up as errors in the Errors count)
   * Duration - How long the lambda executions took
