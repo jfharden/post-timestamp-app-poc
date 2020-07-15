@@ -7,3 +7,4 @@ test:
 	python -m unittest discover
 	python -m unittest discover --start-dir lambdas/sqs_to_s3
 	python -m unittest discover --start-dir lambdas/dynamo_inserter
+	python -m unittest discover --start-dir lambdas/api_gateway_to_sqs
