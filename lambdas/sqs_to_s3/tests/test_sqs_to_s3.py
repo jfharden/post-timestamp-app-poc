@@ -48,6 +48,8 @@ class TestSQSToS3(unittest.TestCase):
         return contextMock
 
     def _load_sqs_message(self):
-        with open(os.path.join("tests", "fixtures", "sqs_message.json"), "rb") as message:
+        dirname = os.path.dirname(__file__)
+
+        with open(os.path.join(dirname, "fixtures", "sqs_message.json"), "rb") as message:
             message_bytes = message.read()
             return message_bytes, json.loads(message_bytes.decode("utf-8"))
