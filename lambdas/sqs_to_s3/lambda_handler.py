@@ -1,5 +1,4 @@
 import boto3
-import json
 import os
 
 from sqs_to_s3.sqs_to_s3 import SQSToS3

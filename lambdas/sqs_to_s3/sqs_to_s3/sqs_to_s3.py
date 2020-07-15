@@ -14,9 +14,6 @@ class SQSToS3:
         Args:
             s3_client (boto3.S3.Client): Boto3 S3 Client
             s3_bucket (string): Name of the s3 bucket to deliver to
-
-        Returns:
-            None
         """
         self._s3_client = s3_client
         self._s3_bucket = s3_bucket

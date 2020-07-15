@@ -6,3 +6,4 @@ doc:
 test:
 	python -m unittest discover
 	python -m unittest discover --start-dir lambdas/sqs_to_s3
+	python -m unittest discover --start-dir lambdas/dynamo_inserter
