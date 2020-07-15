@@ -1,3 +1,5 @@
+import os
+
 from unittest.mock import patch, mock_open
 
 from post_timestamp_app_poc.commands.post import Post
@@ -66,9 +68,11 @@ class TestPost(OutputCapturingTestCase):
             self.assertEqual(1, exception_context_manager.exception.code)
 
     def __load_valid_statefile(self):
-        with open("tests/fixtures/terraform.tfstate.valid") as state_file:
+        dirname = os.path.dirname(__file__)
+        with open(os.path.join(dirname, "..", "..", "fixtures", "terraform.tfstate.valid")) as state_file:
             return state_file.read()
 
     def __load_destroyed_statefile(self):
-        with open("tests/fixtures/terraform.tfstate.destroyed") as state_file:
+        dirname = os.path.dirname(__file__)
+        with open(os.path.join(dirname, "..", "..", "fixtures", "terraform.tfstate.destroyed")) as state_file:
             return state_file.read()
