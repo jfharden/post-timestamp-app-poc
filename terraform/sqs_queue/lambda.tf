@@ -18,6 +18,8 @@ module "lambda_dlq_to_s3" {
   policy = {
     json = data.aws_iam_policy_document.lambda_dlq_to_s3.json
   }
+
+  tags = var.tags
 }
 
 data "aws_iam_policy_document" "lambda_dlq_to_s3" {
