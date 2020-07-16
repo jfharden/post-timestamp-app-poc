@@ -48,3 +48,12 @@ data "aws_iam_policy_document" "lambda_to_sqs" {
     ]
   }
 }
+
+resource "aws_lambda_permission" "api_gateway" {
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = module.lambda_sqs_poster.function_name
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_api_gateway_rest_api.app.execution_arn}/${aws_api_gateway_deployment.app.stage_name}/${aws_api_gateway_method.app.http_method}/${aws_api_gateway_resource.app.path_part}"
+}

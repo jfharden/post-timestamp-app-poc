@@ -5,7 +5,7 @@ output "queue_arn" {
 
 output "queue_id" {
   description = "SQS Queue URL"
-  value = aws_sqs_queue.app.id
+  value       = aws_sqs_queue.app.id
 }
 
 output "dlq_arn" {
