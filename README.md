@@ -50,6 +50,11 @@ $ ./post_timestamp_app_poc.py post
 $ ./post_timestamp_app_poc.py destroy --region=eu-west-1
 ```
 
+Note: Occasionally after the initial deploy it can be a few minutes before the api works, this is only on the initial
+deploy and I believe is a delay in AWS setting up the api gateway to lambda permissions and the sqs queue delivery
+triggers. The KMS keys created will remain in a pending deletion state for 30 days after you destroy this, at which
+point they will finally be deleted, see https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys.html.
+
 Warning: I have run terraform with the -auto-apply flag which means they will apply and destroy without asking for
 confirmation.
 
