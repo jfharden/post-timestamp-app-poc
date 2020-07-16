@@ -162,7 +162,7 @@ it since it requires setting an account-wide permission for api gateway to strea
 tamper with any account wide settings in another persons AWS account. In production it's very likey I would enable
 this with an appropriate log format for the consumer (Apache Common Log Format, JSON, etc).
 
-### Requirements to productionise
+## Requirements to productionise
 
 There are a number of things you would need to do in order to productionise this system. They are:
 
