@@ -12,4 +12,7 @@ def lambda_handler(event, context):
     sqs_poster = SQSPoster(boto3_session.client("sqs"), sqs_queue)
     sqs_poster.post(event, context)
 
-    return
+    return {
+        'statusCode': 201,
+        'body': ''
+    }
