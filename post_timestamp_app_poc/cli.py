@@ -60,6 +60,11 @@ class CLI:
             default="project",
             help="Name of a tag (value will be APP_NAME) to add to all resources to allow for grouping",
         )
+        deploy_parser.add_argument(
+            "--region",
+            default="eu-west-2",
+            help="AWS region to deploy into (default eu-west-2).",
+        )
 
     def __setup_destroy_parser(self, subparsers):
         subparsers.add_parser(
@@ -78,7 +83,7 @@ class CLI:
 
     def __deploy(self, parsed_args):
         deploy_command = Deploy(self.stdin, self.stdout, self.stderr)
-        deploy_command.execute(parsed_args.app_name, parsed_args.resource_group_tag_name)
+        deploy_command.execute(parsed_args.app_name, parsed_args.resource_group_tag_name, parsed_args.region)
 
     def __destroy(self, parsed_args):
         destroy_command = Destroy(self.stdin, self.stdout, self.stderr)

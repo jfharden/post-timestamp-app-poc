@@ -11,5 +11,5 @@ class Destroy(BaseCommand):
             Returns:
                 None
         """
-        destroy_cmd = ["terraform", "destroy"]
+        destroy_cmd = ["terraform", "destroy", "-auto-approve"]
         self._run(destroy_cmd, cwd="terraform/")

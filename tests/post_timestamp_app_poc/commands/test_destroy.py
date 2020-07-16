@@ -15,7 +15,7 @@ class TestDestroy(OutputCapturingTestCase):
     def test_execute(self, subprocess_mock):
         self.destroy_command.execute()
         subprocess_mock.run.assert_called_with(
-            ["terraform", "destroy"],
+            ["terraform", "destroy", "-auto-approve"],
             cwd="terraform/",
             stdin=self.stdin,
             stdout=self.stdout,

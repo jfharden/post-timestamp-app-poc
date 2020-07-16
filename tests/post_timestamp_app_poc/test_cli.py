@@ -24,35 +24,42 @@ class TestCLI(OutputCapturingTestCase):
         args = ['deploy']
         self.cli.run(args)
         deploy_mock_class.assert_called_with(self.stdin, self.stdout, self.stderr)
-        deploy_mock_class.return_value.execute.assert_called_with("jfharden-poc", "project")
+        deploy_mock_class.return_value.execute.assert_called_with("jfharden-poc", "project", "eu-west-2")
 
         self._reset_output()
 
         args = ['deploy', '--app-name', 'foo']
         self.cli.run(args)
         deploy_mock_class.assert_called_with(self.stdin, self.stdout, self.stderr)
-        deploy_mock_class.return_value.execute.assert_called_with("foo", "project")
+        deploy_mock_class.return_value.execute.assert_called_with("foo", "project", "eu-west-2")
 
         self._reset_output()
 
         args = ['deploy', '-n', 'bar']
         self.cli.run(args)
         deploy_mock_class.assert_called_with(self.stdin, self.stdout, self.stderr)
-        deploy_mock_class.return_value.execute.assert_called_with("bar", "project")
+        deploy_mock_class.return_value.execute.assert_called_with("bar", "project", "eu-west-2")
 
         self._reset_output()
 
         args = ['deploy', '--resource-group-tag-name', 'baz']
         self.cli.run(args)
         deploy_mock_class.assert_called_with(self.stdin, self.stdout, self.stderr)
-        deploy_mock_class.return_value.execute.assert_called_with("jfharden-poc", "baz")
+        deploy_mock_class.return_value.execute.assert_called_with("jfharden-poc", "baz", "eu-west-2")
 
         self._reset_output()
 
         args = ['deploy', '-r', 'qux']
         self.cli.run(args)
         deploy_mock_class.assert_called_with(self.stdin, self.stdout, self.stderr)
-        deploy_mock_class.return_value.execute.assert_called_with("jfharden-poc", "qux")
+        deploy_mock_class.return_value.execute.assert_called_with("jfharden-poc", "qux", "eu-west-2")
+
+        self._reset_output()
+
+        args = ['deploy', '--region', 'us-east-1']
+        self.cli.run(args)
+        deploy_mock_class.assert_called_with(self.stdin, self.stdout, self.stderr)
+        deploy_mock_class.return_value.execute.assert_called_with("jfharden-poc", "project", "us-east-1")
 
     @patch("post_timestamp_app_poc.cli.Destroy", autospec=True)
     def test_destroy(self, destroy_mock_class):
