@@ -67,8 +67,13 @@ class CLI:
         )
 
     def __setup_destroy_parser(self, subparsers):
-        subparsers.add_parser(
+        destroy_parser = subparsers.add_parser(
             "destroy", description="Destroy the solution in AWS (will run terraform destroy)"
+        )
+        destroy_parser.add_argument(
+            "--region",
+            default="eu-west-2",
+            help="AWS region to destroy in (default eu-west-2).",
         )
 
     def __setup_post_parser(self, subparsers):
@@ -87,7 +92,7 @@ class CLI:
 
     def __destroy(self, parsed_args):
         destroy_command = Destroy(self.stdin, self.stdout, self.stderr)
-        destroy_command.execute()
+        destroy_command.execute(parsed_args.region)
 
     def __post(self, parsed_args):
         post_command = Post(self.stdin, self.stdout, self.stderr)

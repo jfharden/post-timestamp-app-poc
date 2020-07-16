@@ -13,9 +13,9 @@ class TestDestroy(OutputCapturingTestCase):
 
     @patch("post_timestamp_app_poc.commands.base_command.subprocess")
     def test_execute(self, subprocess_mock):
-        self.destroy_command.execute()
+        self.destroy_command.execute("eu-west-1")
         subprocess_mock.run.assert_called_with(
-            ["terraform", "destroy", "-auto-approve"],
+            ["terraform", "destroy", "-var", "aws_region=eu-west-1", "-auto-approve"],
             cwd="terraform/",
             stdin=self.stdin,
             stdout=self.stdout,

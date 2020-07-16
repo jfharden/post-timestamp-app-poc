@@ -36,14 +36,15 @@ Once you have this working the following commands are available:
 * deploy - Deploy the app into an AWS account (this will also create a config.json file locally which will include the
   settings needed to be able to post) (by default it will deploy into eu-west-2, for other regions supply the --region
   flag)
-* destroy - Destroy the app in your AWS account
+* destroy - Destroy the app in your AWS account (by default it will destroy in eu-west-2, for other regions supply the
+  --region flag)
 * post - Post (using curl, I would have used python requests library but the spec specifically said use curl) a request
   to the app
 
 ```bash
-$ ./post_timestamp_app_poc.py deploy --region=eu-west-2
+$ ./post_timestamp_app_poc.py deploy --region=eu-west-1
 $ ./post_timestamp_app_poc.py post
-$ ./post_timestamp_app_poc.py destroy
+$ ./post_timestamp_app_poc.py destroy --region=eu-west-1
 ```
 
 Warning: I have run terraform with the -auto-apply flag which means they will apply and destroy without asking for

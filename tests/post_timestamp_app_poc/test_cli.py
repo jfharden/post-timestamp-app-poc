@@ -66,7 +66,14 @@ class TestCLI(OutputCapturingTestCase):
         args = ['destroy']
         self.cli.run(args)
         destroy_mock_class.assert_called_with(self.stdin, self.stdout, self.stderr)
-        destroy_mock_class.return_value.execute.assert_called_with()
+        destroy_mock_class.return_value.execute.assert_called_with("eu-west-2")
+
+        self._reset_output()
+
+        args = ['destroy', '--region', 'us-east-1']
+        self.cli.run(args)
+        destroy_mock_class.assert_called_with(self.stdin, self.stdout, self.stderr)
+        destroy_mock_class.return_value.execute.assert_called_with("us-east-1")
 
     @patch("post_timestamp_app_poc.cli.Post", autospec=True)
     def test_post(self, post_mock_class):
