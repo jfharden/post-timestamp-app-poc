@@ -3,6 +3,9 @@ Proof of concept for a simple web app which posts a timestamp into a database.
 
 Included in a simple cli client to orchestrate deployment, destruction, and posting to the web app)
 
+The system design can be found in [markdown format](docs/system-design.md) and [pdf format](docs/system-design.pdf) in
+the docs directory.
+
 ## Getting started
 
 ### Prerequisites to run

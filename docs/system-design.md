@@ -182,7 +182,7 @@ A few notes on the security of this deployment:
 * For better regulatory compliance you could deploy all of this inside a VPC and use a VPC Endpoint to provide access
   to dynamo.
 
-## Disaster recover
+## Disaster recovery
 
 ### Dynamo
 
