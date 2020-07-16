@@ -9,6 +9,24 @@ I wrote the command line tools in pythnon 3.8.
 
 ![Proof of concept high level design](images/high-level-design.png)
 
+I'm inserting the timestamp (iso8601 format), along with the api gateway request id. I did this since there is the
+possibility of collision with multiple requests hitting the endpoint in the same microsecond ("Scientists have
+calculated that the chances of something so patently absurd actually existing are millions to one.  But magicians have
+calculated that million-to-one chances crop up nine times out of ten" - Terry Pratchett, Mort) will generate identical
+timestamps and since the timestamp is the partition key in dynamo we would lose all but a single instance. Including
+the request\_id as an ordering key this gives us a perfect record of all requests (and would make it easier to debug
+potentially if we did see collisions in a production system).
+
+A resource group is created so that you can see all the resources grouped together easily in the aws console, or with
+the cli:
+
+```
+$ aws resource-groups list-group-resources --group-name jfharden-poc --region eu-west-2
+```
+
+The final url has an extra path element (https://domain/dev/app), this is a side effect of not using a custom domain.
+In a real deployment I would be using a custom domain instead of default api gateway domain.
+
 ## Considerations
 
 ### Choice of a decoupled event driven architecture
@@ -129,4 +147,63 @@ every resource and creating a budget alert.
 We would probably not want to alert an on call engineer for all of these (or even most), but for select metrics,
 and even for those it would be better to have a low priority and high priority alerts. Low priority alerts only being
 received during business hours and ideally configured to alert in advance of an incident becoming serious.
+
+All of the lambda functions will log to cloudwatch logs, api gateway has this ability as well, but I have not enabled
+it since it requires setting an account-wide permission for api gateway to stream to cloudwatch logs. I do not wish to
+tamper with any account wide settings in another persons AWS account. In production it's very likey I would enable
+this with an appropriate log format for the consumer (Apache Common Log Format, JSON, etc).
+
+### Requirements to productionise
+
+There are a number of things you would need to do in order to productionise this system. They are:
+
+* Enable alerting as described above.
+* Create comprehensive integration tests.
+* Create real deployment pipelines to deploy changes to the infrastructure and lambdas, giving each pipeline it's own
+  permissions to perform deployments so administrator privileges are not required. (If people were to manually deploy
+  then roles can be created for terraform to assume which have the correct permissions and require multi-factor auth.
+* Break out lambdas into their own git projects (an oppinionated choice on my part, but not set in stone) so they can
+  have individial unit tests, integration tests, and potentially deployment pipelines.
+
+## Security
+
+A few notes on the security of this deployment:
+
+* There is encryption at every stage, API Gateway will receive connections over HTTPS, and every stage afterwards uses
+  encryption at rest using a custom KMS key
+* There are no access restrictions on hitting the api gateway endpoint, this would be easy to add with a policy by IP,
+  or easy to add an API Key, other less trivial methods are available such as cognito auth, or any custom method.
+* I've rate limited the api gateway connection on purpose to 100 per second, with a burst capability of an additional
+  50 requests per second. This is probably not an appropriate configuration for a production system, but for this POC
+  that seems fine. Changing it is trivial if that is too restrictive.
+* There is no level of DDOS protection in this solution beyond
+  [AWS' automatic DDOS protection](https://docs.aws.amazon.com/waf/latest/developerguide/ddos-responding.html). You
+  could add AWS Web Application Firewall rules, or use another provider as a proxy (such as cloudflare)
+* For better regulatory compliance you could deploy all of this inside a VPC and use a VPC Endpoint to provide access
+  to dynamo.
+
+## Disaster recover
+
+### Dynamo
+
+I have enabled point in time recovery which gives the ability to recover to any single second in the last 35 days, in
+production I would also expect to create longer term backups using "manual" backups, these can be easily scheduled with
+a Cloudwatch event rule run on a schedule.
+
+Restoration can be from either the point in time recovery, or a restore of a "manual" backup. Given that point in time
+gives you 35 days of recovery you are probably in serious trouble if you need to recover further back than that.
+However if you do, possibly to audit a past incident you hadn't detected, you could restore a manual backup to a new
+dynamo cluster (or over the top of the existing one, but that might be a new disaster in itself given how old it is)
+
+### Message delivery into dynamo
+
+If messages fail to be delivered into Dynamo they will go as JSON files to s3 via the dead letter queue. These can be
+replayed by posting the contents back into the primary SQS queue, and can also be investigated for poison pill
+messages.
+
+### Other resources
+
+All other resources can be recreated by running terraform apply again. The URL of the endpoint will change in my exact
+solution, but in production I would use a custom domain for the API gateway endpoint which would resolve it.
+
 
