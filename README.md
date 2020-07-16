@@ -25,7 +25,7 @@ virtualenv first and then you can run the cli:
 $ python -m venv env
 $ source ./env/bin/activate
 $ pip install -r requirements.txt
-$ ./post-timestamp-app-poc help
+$ ./post_timestamp_app_poc.py --help
 ```
 
 Note if you do not use bash or zsh as your shell there are other files in ./env/bin for fish (`./env/bin/activate.fish`)
@@ -34,16 +34,20 @@ and csh (`./env/bin/activate.csh`)
 Once you have this working the following commands are available:
 
 * deploy - Deploy the app into an AWS account (this will also create a config.json file locally which will include the
-  settings needed to be able to post)
+  settings needed to be able to post) (by default it will deploy into eu-west-2, for other regions supply the --region
+  flag)
 * destroy - Destroy the app in your AWS account
 * post - Post (using curl, I would have used python requests library but the spec specifically said use curl) a request
   to the app
 
 ```bash
-$ ./post_timestamp_app_poc.py deploy
+$ ./post_timestamp_app_poc.py deploy --region=eu-west-2
 $ ./post_timestamp_app_poc.py post
 $ ./post_timestamp_app_poc.py destroy
 ```
+
+Warning: I have run terraform with the -auto-apply flag which means they will apply and destroy without asking for
+confirmation.
 
 ## Updating documentation
 
@@ -53,4 +57,35 @@ run make doc and it will be regenerated using pandoc in a docker container:
 ```bash
 $ make doc
 docker run -v `pwd`/docs/:/data --rm -ti pandoc/latex:2.9 pandoc system-design.md --table-of-contents -o system-design.pdf
+```
+
+## Running the tests
+The Makefile also includes a test target which will run the tests for the cli and every lambda:
+
+```bash
+$ make test
+python -m unittest discover
+..........
+----------------------------------------------------------------------
+Ran 10 tests in 0.041s
+
+OK
+python -m unittest discover --start-dir lambdas/sqs_to_s3
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.048s
+
+OK
+python -m unittest discover --start-dir lambdas/dynamo_inserter
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.308s
+
+OK
+python -m unittest discover --start-dir lambdas/api_gateway_to_sqs
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.033s
+
+OK
 ```
